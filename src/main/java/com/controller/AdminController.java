@@ -49,7 +49,7 @@ public class AdminController {
 		model.addAttribute("totalCourses", totalCourses);
 		model.addAttribute("totalStudents", totalStudents);
 		model.addAttribute("totalEnrolledStudents", totalEnrolledStudents);
-		model.addAttribute("totalNonEnrolledStudents", (totalStudents-totalEnrolledStudents));
+		model.addAttribute("totalNonEnrolledStudents", (totalStudents - totalEnrolledStudents));
 		return "admin/index";
 	}
 
@@ -60,16 +60,15 @@ public class AdminController {
 		model.addAttribute("courses", courses);
 		return "admin/manageCourses";
 	}
-	
+
 	@RequestMapping("/searchCourses")
 	public String searchCourses(@RequestParam("keyword") String keyword, Model model) {
 
-	    List<Course> list = courseService.searchCourses(keyword);
-	    model.addAttribute("courses", list);
-	    System.out.println(list);
-	    return "admin/manageCourses"; 
+		List<Course> list = courseService.searchCourses(keyword);
+		model.addAttribute("courses", list);
+		System.out.println(list);
+		return "admin/manageCourses";
 	}
-
 
 	@RequestMapping(path = "/addCourseForm")
 	public String addCourseForm(Model model) {
