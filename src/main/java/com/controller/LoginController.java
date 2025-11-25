@@ -22,13 +22,13 @@ public class LoginController {
 
 	@Autowired
 	LoginService loginService;
-	
+
 	@Autowired
 	CourseService courseService;
 
 	@Autowired
 	StudentService studentService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -38,13 +38,13 @@ public class LoginController {
 	}
 
 	@RequestMapping(path = "/loginCheck", method = RequestMethod.POST)
-	public String getWelcomePage(@ModelAttribute LoginRequest loginRequest, Model model,HttpSession session) {
+	public String getWelcomePage(@ModelAttribute LoginRequest loginRequest, Model model, HttpSession session) {
 
 		Admin admin = this.loginService.getIfAdminByMail(loginRequest.getEmail(), loginRequest.getPassword());
-		
+
 		if (admin != null && passwordEncoder.matches(loginRequest.getPassword(), admin.getPassword())) {
 			model.addAttribute("activePage", "dashboard");
-			
+
 			int totalCourses = courseService.getTotalCourses();
 			int totalStudents = this.studentService.getTotalStudents();
 			int totalEnrolledStudents = this.studentService.getTotalEnrolledStudents();
@@ -52,8 +52,8 @@ public class LoginController {
 			model.addAttribute("totalCourses", totalCourses);
 			model.addAttribute("totalStudents", totalStudents);
 			model.addAttribute("totalEnrolledStudents", totalEnrolledStudents);
-			model.addAttribute("totalNonEnrolledStudents", (totalStudents-totalEnrolledStudents));
-			
+			model.addAttribute("totalNonEnrolledStudents", (totalStudents - totalEnrolledStudents));
+
 			session.setAttribute("adminObj", admin);
 			return "admin/index";
 		} else {
@@ -61,10 +61,10 @@ public class LoginController {
 			if (student != null && passwordEncoder.matches(loginRequest.getPassword(), student.getPassword())) {
 				model.addAttribute("activePage", "dashboard");
 				session.setAttribute("studentObj", student);
-				
+
 				int totalCourses = courseService.getTotalCourses();
 				int totalEnrolledCourses = studentService.getTotalEnrolledCourses(student.getId());
-				
+
 				model.addAttribute("totalCourses", totalCourses);
 				model.addAttribute("totalEnrolledCourses", totalEnrolledCourses);
 				return "student/index";
